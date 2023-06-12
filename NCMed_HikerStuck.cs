@@ -6,10 +6,10 @@ using CitizenFX.Core.Native;
 using FivePD.API;
 using FivePD.API.Utils;
 
-namespace WildernessCallouts
+namespace RangersoftheWildernessCallouts
 {
     
-    [CalloutProperties("NC Med Hiker Stuck", "Valandria", "0.1.0")]
+    [CalloutProperties("NC Med Hiker Stuck", "Valandria", "0.1.1")]
     public class MedHikerStuck : Callout
     {
         private Ped vic;
@@ -25,6 +25,8 @@ namespace WildernessCallouts
             new Vector3(-1935.35f, 486.18f, 18.9f),
             new Vector3(-1604.06f, 4270.34f, 105.09f),
             new Vector3(-625.27f, 4334.72f, 114.21f),
+            new Vector3(-552.6f, 4440.08f, 33.05f),
+            new Vector3(-537.33f, 4401.33f, 34.38f),
         };
         
         public MedHikerStuck()
