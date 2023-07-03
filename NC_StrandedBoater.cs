@@ -14,7 +14,7 @@ namespace RangersoftheWildernessCallouts
     public class NCStrandedBoater : Callout
     {
         private Vehicle ncsbboat;
-        Ped ncsbdriver, ncsbpassenger1, ncsbpassenger2, ncsbpassenger3;
+        Ped ncsbdriver, ncsbpassenger1, ncsbpassenger2, ncsbpassenger3, ncsbanimal;
         private string[] ncsbboatList = { "tug", "Dinghy", "Jetmax", "Speeder", "Speeder2", "Squalo", "Submersible", "Submersible2", "Suntrap", "Toro", "Tropic", "Tropic2" };
         private Vector3[] boatcoordinates =
         {
@@ -128,6 +128,7 @@ namespace RangersoftheWildernessCallouts
 
         public async Task fullsentitbro()
         {
+            Tick -= fullsentitbro;
             ncsbdriver = await SpawnPed(RandomUtils.GetRandomPed(), Location + 1);
             ncsbpassenger1 = await SpawnPed(RandomUtils.GetRandomPed(), Location + 1);
             ncsbpassenger2 = await SpawnPed(RandomUtils.GetRandomPed(), Location + 4);
@@ -139,6 +140,7 @@ namespace RangersoftheWildernessCallouts
             ncsbpassenger2.AttachBlip();
             ncsbpassenger3.AttachBlip();
             API.Wait(6000);
+            ncsbboat.EngineHealth = 5;
             PedData ncsbdriverdata = new PedData();
             PedData ncsbpassenger1data = new PedData();
             PedData ncsbpassenger2data = new PedData();
@@ -148,8 +150,8 @@ namespace RangersoftheWildernessCallouts
             PedData ncsbdata2 = await Utilities.GetPedData(ncsbpassenger1.NetworkId);
             PedData ncsbdata1 = await Utilities.GetPedData(ncsbdriver.NetworkId);
             string driverfirstname = ncsbdata1.FirstName;
-            string passenger1firstname = ncsbdata2.Firstname;
-            string passenger2firstname = ncsbdata3.Firstname;
+            string passenger1firstname = ncsbdata2.FirstName;
+            string passenger2firstname = ncsbdata3.FirstName;
             ncsbdriverdata.Warrant = "FELONY: Boating while intoxicated.";
             ncsbdriverdata.BloodAlcoholLevel = 0.11;
             ncsbpassenger1data.BloodAlcoholLevel = 0.05;
@@ -299,29 +301,103 @@ namespace RangersoftheWildernessCallouts
             {
                 "They just full sent it bro!",
                 "Yo! Bro," + driverfirstname + "sent it bro!",
-                "We just full sent it bro!"
+                "We just full sent it bro!",
                 "We got some wicked air full sending it bro!"
             };
             PedQuestion ncsbpass1q2 = new PedQuestion();
             ncsbpass1q2.Question = "Could you explain what that is?";
             ncsbpass1q2.Answers = new List<string>
             {
-
+                "So like," + passenger2firstname + "told" + driverfirstname + "to floor it!",
+                "Yo" + driverfirstname + "just whipped it dawg!",
+                "It's when you just go full on.",
+                "Bro it's just going all out.",
+                "Vroom vroom!",
             };
             PedQuestion ncsbpass1q3 = new PedQuestion();
+            ncsbpass1q3.Question = "Was this intentional or did they lose control?";
+            ncsbpass1q3.Answers = new List<string>
+            {
+
+            };
             PedQuestion ncsbpass1q4 = new PedQuestion();
+            ncsbpass1q4.Question = "Is this a common situation?";
+            ncsbpass1q4.Answers = new List<string>
+            {
+
+            };
             PedQuestion ncsbpass1q5 = new PedQuestion();
+            ncsbpass1q5.Question = "Have all of you been drinking?";
+            ncsbpass1q5.Answers = new List<string>
+            {
+
+            };
             PedQuestion ncsbpass1q6 = new PedQuestion();
+            ncsbpass1q6.Question = "";
+            ncsbpass1q6.Answers = new List<string>
+            {
+
+            };
             PedQuestion ncsbpass1q7 = new PedQuestion();
+            ncsbpass1q7.Question = "";
+            ncsbpass1q7.Answers = new List<string>
+            {
+
+            };
             PedQuestion ncsbpass1q8 = new PedQuestion();
+            ncsbpass1q8.Question = "";
+            ncsbpass1q8.Answers = new List<string>
+            {
+
+            };
             PedQuestion ncsbpass1q9 = new PedQuestion();
+            ncsbpass1q9.Question = "";
+            ncsbpass1q9.Answers = new List<string>
+            {
+
+            };
             PedQuestion ncsbpass1q10 = new PedQuestion();
+            ncsbpass1q10.Question = "";
+            ncsbpass1q10.Answers = new List<string>
+            {
+
+            };
             PedQuestion ncsbpass1q11 = new PedQuestion();
+            ncsbpass1q11.Question = "";
+            ncsbpass1q11.Answers = new List<string>
+            {
+
+            };
             PedQuestion ncsbpass1q12 = new PedQuestion();
+            ncsbpass1q12.Question = "";
+            ncsbpass1q12.Answers = new List<string>
+            {
+
+            };
             PedQuestion ncsbpass1q13 = new PedQuestion();
+            ncsbpass1q13.Question = "";
+            ncsbpass1q13.Answers = new List<string>
+            {
+
+            };
             PedQuestion ncsbpass1q14 = new PedQuestion();
+            ncsbpass1q14.Question = "";
+            ncsbpass1q14.Answers = new List<string>
+            {
+
+            };
             PedQuestion ncsbpass1q15 = new PedQuestion();
+            ncsbpass1q15.Question = "";
+            ncsbpass1q15.Answers = new List<string>
+            {
+
+            };
             PedQuestion ncsbpass1q16 = new PedQuestion();
+            ncsbpass1q16.Question = "";
+            ncsbpass1q16.Answers = new List<string>
+            {
+
+            };
         }
 
         public async Task notmyboatdotjpeg()

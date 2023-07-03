@@ -69,9 +69,11 @@ public class NCAnimalMVA : FivePD.API.Callout
 
         ncamvadriver.AlwaysKeepTask = true;
         ncamvadriver.BlockPermanentEvents = true;
+        ncamvadriver.IsPersistent = true;
 
         ncamvapassenger.AlwaysKeepTask = true;
         ncamvapassenger.BlockPermanentEvents = true;
+        ncamvapassenger.IsPersistent = true;
 
         Random mvaanimal = new Random();
         int susped = mvaanimal.Next(1, 40 + 1);
@@ -109,37 +111,71 @@ public class NCAnimalMVA : FivePD.API.Callout
         ncamvavehicle.AttachBlip();
 
         // ncamvadriver Data
-        PedData data = new PedData();
-        VehicleData vehicleData = new VehicleData();
+        PedData ncamvadriverdata = new PedData();
+        VehicleData ncamvavehicleData = new VehicleData();
+
+        PedQuestion ncamvadq1 = new PedQuestion();
+        ncamvadq1.Question = "";
+        ncamvadq1.Answers = new List<string>
+        {
+            "",
+            "",
+        };
+
+        PedQuestion ncamvadq2 = new PedQuestion();
+        ncamvadq2.Question = "";
+        ncamvadq2.Answers = new List<string>
+        {
+            "",
+            "",
+        };
+
+        PedQuestion ncamvadq3 = new PedQuestion();
+        ncamvadq3.Question = "";
+        ncamvadq3.Answers = new List<string>
+        {
+            "",
+            "",
+        };
+
+        PedQuestion ncamvadq4 = new PedQuestion();
+        ncamvadq4.Question = "";
+        ncamvadq4.Answers = new List<string>
+        {
+            "",
+            "",
+        };
+
         Random random = new Random();
         int x = random.Next(1, 100 + 1);
         if (x <= 5)
         {
-            data.BloodAlcoholLevel = 0.09;
-            Utilities.SetPedData(ncamvadriver.NetworkId, data);
+            ncamvadriverdata.BloodAlcoholLevel = 0.09;
+            Utilities.SetPedData(ncamvadriver.NetworkId, ncamvadriverdata);
 
             var items = new List<Item>();
             Item sixpack = new Item
             {
-                Name = "Six pack of beer",
-                IsIllegal = false
+                Name = "Open six pack of beer",
+                IsIllegal = true
             };
 
             items.Add(sixpack);
-            vehicleData.Items = items;
-            Utilities.SetVehicleData(ncamvavehicle.NetworkId, vehicleData);
+            ncamvavehicleData.Items = items;
+            Utilities.SetVehicleData(ncamvavehicle.NetworkId, ncamvavehicleData);
+            Tick += dwincamva;
         }
         if (x > 26 && x <= 28)
         {
-            data.UsedDrugs[0] = PedData.Drugs.Meth;
+            ncamvadriverdata.UsedDrugs[0] = PedData.Drugs.Meth;
             Item item = new Item();
             item.Name = "Meth pipe";
             item.IsIllegal = true;
 
-            data.Items = new List<Item>();
-            data.Items.Add(item);
+            ncamvadriverdata.Items = new List<Item>();
+            ncamvadriverdata.Items.Add(item);
 
-            Utilities.SetPedData(ncamvadriver.NetworkId, data);
+            Utilities.SetPedData(ncamvadriver.NetworkId, ncamvadriverdata);
 
             var items = new List<Item>();
             Item methbag = new Item
@@ -149,14 +185,34 @@ public class NCAnimalMVA : FivePD.API.Callout
             };
 
             items.Add(methbag);
-            vehicleData.Items = items;
-            Utilities.SetVehicleData(ncamvavehicle.NetworkId, vehicleData);
+            ncamvavehicleData.Items = items;
+            Utilities.SetVehicleData(ncamvavehicle.NetworkId, ncamvavehicleData);
+            Tick += methncamva;
         }
         if (x > 68 && x <= 69)
         {
-            data.Warrant = "Bench Warrant";
+            ncamvadriverdata.Warrant = "Bench Warrant";
 
-            Utilities.SetPedData(ncamvadriver.NetworkId, data);
+            Utilities.SetPedData(ncamvadriver.NetworkId, ncamvadriverdata);
+            Tick += warrantncamva;
         }
+    }
+    public async Task dwincamva()
+    {
+        PedQuestion dwincamvadq1 = new PedQuestion();
+        dwincamvadq1.Question = "";
+        dwincamvadq1.Answers = new List<string>
+        {
+            "",
+            "",
+        };
+    }
+    public async Task methncamva()
+    {
+
+    }
+    public async Task warrantncamva()
+    {
+
     }
 }
