@@ -10,7 +10,7 @@ using FivePD.API.Utils;
 namespace RangersoftheWildernessCallouts
 {
 
-    [CalloutProperties("NC Stranded Boater", "Valandria", "0.0.3")]
+    [CalloutProperties("Northern Command Stranded Boater", "Valandria", "0.0.3")]
     public class NCStrandedBoater : Callout
     {
         private Vehicle ncsbboat;
@@ -95,21 +95,21 @@ namespace RangersoftheWildernessCallouts
             ResponseCode = 2;
             StartDistance = 200f;
         }
+        public override async Task OnAccept()
+        {
+            InitBlip();
+            UpdateData();
+        }
+
         public async override void OnStart(Ped player)
         {
             base.OnStart(player);
+
             Random strandedboattyperandom = new Random();
             string cartype = ncsbboatList[strandedboattyperandom.Next(ncsbboatList.Length)];
             VehicleHash Hash = (VehicleHash)API.GetHashKey(cartype);
             ncsbboat = await SpawnVehicle(Hash, Location);
-            ncsbdriver.AlwaysKeepTask = true;
-            ncsbdriver.BlockPermanentEvents = true;
-            ncsbpassenger1.AlwaysKeepTask = true;
-            ncsbpassenger1.BlockPermanentEvents = true;
-            ncsbpassenger2.AlwaysKeepTask = true;
-            ncsbpassenger2.BlockPermanentEvents = true;
-            ncsbpassenger3.AlwaysKeepTask = true;
-            ncsbpassenger3.BlockPermanentEvents = true;
+
             Tick += fullsentitbro;  //Temporary tick
             //Random ncsbscenario = new Random();
             //int ncsbtalktalk = ncsbscenario.Next(1, 100 + 1);
@@ -140,8 +140,19 @@ namespace RangersoftheWildernessCallouts
             ncsbpassenger1.AttachBlip();
             ncsbpassenger2.AttachBlip();
             ncsbpassenger3.AttachBlip();
+            ncsbdriver.AlwaysKeepTask = true;
+            ncsbdriver.BlockPermanentEvents = true;
+            ncsbpassenger1.AlwaysKeepTask = true;
+            ncsbpassenger1.BlockPermanentEvents = true;
+            ncsbpassenger2.AlwaysKeepTask = true;
+            ncsbpassenger2.BlockPermanentEvents = true;
+            ncsbpassenger3.AlwaysKeepTask = true;
+            ncsbpassenger3.BlockPermanentEvents = true;
+
             API.Wait(6000);
+
             ncsbboat.EngineHealth = 5;
+
             PedData ncsbdriverdata = new PedData();
             PedData ncsbpassenger1data = new PedData();
             PedData ncsbpassenger2data = new PedData();
@@ -150,9 +161,11 @@ namespace RangersoftheWildernessCallouts
             PedData ncsbdata3 = await Utilities.GetPedData(ncsbpassenger2.NetworkId);
             PedData ncsbdata2 = await Utilities.GetPedData(ncsbpassenger1.NetworkId);
             PedData ncsbdata1 = await Utilities.GetPedData(ncsbdriver.NetworkId);
+
             string driverfirstname = ncsbdata1.FirstName;
             string passenger1firstname = ncsbdata2.FirstName;
             string passenger2firstname = ncsbdata3.FirstName;
+
             ncsbdriverdata.Warrant = "FELONY: Boating while intoxicated.";
             ncsbdriverdata.BloodAlcoholLevel = 0.11;
             ncsbpassenger1data.BloodAlcoholLevel = 0.05;
@@ -160,7 +173,8 @@ namespace RangersoftheWildernessCallouts
             ncsbpassenger3data.BloodAlcoholLevel = 0.09;
             ncsbpassenger3data.FirstName = "Sonia";
             ncsbpassenger3data.LastName = "Charleston";
-            VehicleData ncsbboatdata = new VehicleData();
+
+            VehicleData ncsbboatdata = await Utilities.GetVehicleData(ncsbboat.NetworkId);
             List<Item> drinkyonthewater = new List<Item>();
             Item BeerBottle = new Item
             {
@@ -295,6 +309,7 @@ namespace RangersoftheWildernessCallouts
                 drinkyonthewater.Add(Tallboy);
             }
             ncsbboatdata.Items = drinkyonthewater;
+            Utilities.SetVehicleData(ncsbboat.NetworkId, ncsbboatdata);
 
             PedQuestion ncsbpass1q1 = new PedQuestion();
             ncsbpass1q1.Question = "What happened today?";
@@ -399,6 +414,11 @@ namespace RangersoftheWildernessCallouts
             //{
             //
             //};
+
+            Utilities.SetPedData(ncsbdriver.NetworkId, ncsbdriverdata);
+            Utilities.SetPedData(ncsbpassenger1.NetworkId, ncsbpassenger1data);
+            Utilities.SetPedData(ncsbpassenger2.NetworkId, ncsbpassenger2data);
+            Utilities.SetPedData(ncsbpassenger3.NetworkId, ncsbpassenger3data);
         }
 
         //public async Task notmyboatdotjpeg()
@@ -410,12 +430,6 @@ namespace RangersoftheWildernessCallouts
         //{
         //
         //}
-
-        public async override Task OnAccept()
-        {
-            InitBlip();
-            UpdateData();
-        }
 
     private void Notify(string message)
         {

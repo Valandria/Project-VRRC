@@ -142,18 +142,6 @@ namespace RangersoftheWildernessCallouts
 
             ncamvadriver = await SpawnPed(RandomUtils.GetRandomPed(), Location + 5);
 
-            ncamvadriver.AlwaysKeepTask = true;
-            ncamvadriver.BlockPermanentEvents = true;
-            ncamvadriver.IsPersistent = true;
-
-            ncamvapassenger.AlwaysKeepTask = true;
-            ncamvapassenger.BlockPermanentEvents = true;
-            ncamvapassenger.IsPersistent = true;
-
-            ncamvaanimal.AlwaysKeepTask = true;
-            ncamvaanimal.BlockPermanentEvents = true;
-            ncamvaanimal.IsPersistent = true;
-
             Random ncmmvaanimal = new Random();
             int ncmsuspedanimal = ncmmvaanimal.Next(1, 100 + 1);
             if (ncmsuspedanimal <= 10)
@@ -176,6 +164,18 @@ namespace RangersoftheWildernessCallouts
             {
                 ncamvaanimal = await SpawnPed(PedHash.Cow, Location);
             }
+
+            ncamvadriver.AlwaysKeepTask = true;
+            ncamvadriver.BlockPermanentEvents = true;
+            ncamvadriver.IsPersistent = true;
+
+            //ncamvapassenger.AlwaysKeepTask = true;
+            //ncamvapassenger.BlockPermanentEvents = true;
+            //ncamvapassenger.IsPersistent = true;
+
+            ncamvaanimal.AlwaysKeepTask = true;
+            ncamvaanimal.BlockPermanentEvents = true;
+            ncamvaanimal.IsPersistent = true;
 
             ncamvaanimal.Kill();
 
