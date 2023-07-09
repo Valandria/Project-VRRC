@@ -17,4 +17,4 @@ Please note that some of the callouts uploaded may not properly function or are 
 
 All callouts will be continuously updated as time permits and will eventually be converted over to FivePD 2.0 once the API is released.  Due to time limitations and this being a solo project, it will be a slow process getting each callout updated and created.
 
-If you’d like to support the project or just try out the callouts, feel free to join the Discord: http://discord.gg/RapidResponse
+If you’d like to support the project or just try out the callouts, feel free to join the Discord: https://discord.gg/JfZMaAsTYK
