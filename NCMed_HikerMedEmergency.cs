@@ -6,10 +6,10 @@ using CitizenFX.Core.Native;
 using FivePD.API;
 using FivePD.API.Utils;
 
-namespace WildernessMedicalCallouts
+namespace RangersoftheWildernessCallouts
 {
     
-    [CalloutProperties("NC Med - Wilderness", "Valandria", "0.1.0")]
+    [CalloutProperties("NC Med - Hiker Medical Emergency", "Valandria", "0.1.0")]
     public class NCMedWilderness : Callout
     {
         private Ped vicmedwild;

@@ -89,7 +89,7 @@ namespace RangersoftheWildernessCallouts
                 "BlueGoat is the only energy drink to give you reflexes like a goat, to parkour away from the police!",
                 "BlueGoat is the only energy drink to give you reflexes like a goat, to jump at vehicles head-on!",
                 "BlueGoat is the only energy drink to give you reflexes like a goat, to belt beautiful ballads of justice.",
-                "BlueGoat is the only energy drink to give you reflexes like a goat, to not be like Goat Man and dish out vigilante justice.",
+                "BlueGoat is the only energy drink to give you reflexes like a goat, to... uh, not be like Goat Man and dish out vigilante justice.",
             };
             PedQuestion question5 = new PedQuestion();
             question5.Question = "*Medical Observations (1)*";

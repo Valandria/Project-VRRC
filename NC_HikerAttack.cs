@@ -11,7 +11,7 @@ namespace RangersoftheWildernessCallouts
     [CalloutProperties("NC Hiker Attack", "Valandria", "0.1.0")]
     public class NCHikerAttack : Callout
     {
-        private Ped vic, suspect;
+        private Ped nchaped1, nchaped2;
         private Vector3[] coordinates =
         {
             new Vector3(-1114.65f, 4837.19f, 207.55f),
@@ -112,63 +112,116 @@ namespace RangersoftheWildernessCallouts
             int susped = random.Next(1, 100 + 1);
             if (susped <= 10)
             {
-                suspect = await SpawnPed(PedHash.MountainLion, Location);
+                nchaped2 = await SpawnPed(PedHash.MountainLion, Location);
+                Tick += methimals;
             }
             else if (susped > 10 && susped <= 20)
             {
-                suspect = await SpawnPed(PedHash.Boar, Location);
+                nchaped2 = await SpawnPed(PedHash.Boar, Location);
+                Tick += methimals;
             }
             else if (susped > 20 && susped <= 30)
             {
-                suspect = await SpawnPed(PedHash.Coyote, Location);
+                nchaped2 = await SpawnPed(PedHash.Coyote, Location);
+                Tick += methimals;
             }
             else if (susped > 30 && susped <= 40)
             {
-                suspect = await SpawnPed(PedHash.Deer, Location);
+                nchaped2 = await SpawnPed(PedHash.Deer, Location);
+                nchaped1.Kill();
+                Tick += methimals;
             }
             else
             {
-                suspect = await SpawnPed(RandomUtils.GetRandomPed(), Location);
-                suspect.Weapons.Give(WeaponHash.Pistol, 1000, true, true);
+                nchaped2 = await SpawnPed(RandomUtils.GetRandomPed(), Location);
+                nchaped2.Weapons.Give(WeaponHash.Pistol, 1000, true, true);
+                Tick += thatsmethedupman;
             }
-            vic = await SpawnPed(RandomUtils.GetRandomPed(), Location);
-            PedData data = new PedData();
-            Utilities.SetPedData(vic.NetworkId, data);
-            suspect.AlwaysKeepTask = true;
-            suspect.BlockPermanentEvents = true;
-            vic.AlwaysKeepTask = true;
-            vic.BlockPermanentEvents = true;
-            vic.AttachBlip();
-            suspect.AttachBlip();
-            suspect.RelationshipGroup = 0xCE133D78;
-            if (vic.IsDead == false)
+            nchaped1 = await SpawnPed(RandomUtils.GetRandomPed(), Location);
+            nchaped2.AlwaysKeepTask = true;
+            nchaped2.BlockPermanentEvents = true;
+            nchaped1.AlwaysKeepTask = true;
+            nchaped1.BlockPermanentEvents = true;
+            nchaped1.AttachBlip();
+            nchaped2.AttachBlip();
+            nchaped2.RelationshipGroup = 0xCE133D78;
+            if (nchaped1.IsDead == false)
             {
-                suspect.Task.FightAgainst(vic);
+                nchaped2.Task.FightAgainst(nchaped1);
             }
-            if (vic.IsDead == true)
+            if (nchaped1.IsDead == true)
             {
-                suspect.Task.FightAgainstHatedTargets(this.StartDistance);
+                nchaped2.Task.FightAgainstHatedTargets(this.StartDistance);
+                API.Wait(10000);
+                return;
             }
-            PedData firstnamedata1 = await Utilities.GetPedData(vic.NetworkId);
+            PedData firstnamedata1 = await Utilities.GetPedData(nchaped1.NetworkId);
             string firstname = firstnamedata1.FirstName;
-            PedData firstnamedata2 = await Utilities.GetPedData(suspect.NetworkId);
+            PedData firstnamedata2 = await Utilities.GetPedData(nchaped2.NetworkId);
             string firstname2 = firstnamedata2.FirstName;
             Random speechpatternrandom2 = new Random();
             int x = speechpatternrandom2.Next(1, 100 + 1);
             if (x <= 40)
             {
-                vic.Task.ReactAndFlee(suspect);
+                nchaped1.Task.ReactAndFlee(nchaped2);
                 DrawSubtitle("~r~[" + firstname + "] ~s~Please help me!", 5000);
             }
             else if (x > 40 && x <= 65)
             {
-                vic.Task.ReactAndFlee(suspect);
+                nchaped1.Task.ReactAndFlee(nchaped2);
                 DrawSubtitle("~r~[" + firstname + "] ~s~Leave me alone!", 5000);
             }
             else
             {
-                vic.Task.ReactAndFlee(suspect);
+                nchaped1.Task.ReactAndFlee(nchaped2);
                 DrawSubtitle("~r~[" + firstname + "] ~s~Please don't kill me!", 5000);
+            }
+        }
+
+        public async Task methimals()
+        {
+            Tick -= methimals;
+            PedData nchaped2data = new PedData();
+            Utilities.SetPedData(nchaped2.NetworkId, nchaped2data);
+            Random methimalsgo = new Random();
+            int methmeat = methimalsgo.Next(1, 100 + 1);
+            if (methmeat > 32 && methmeat < 67)
+            {
+                nchaped2data.UsedDrugs[0] = PedData.Drugs.Meth;
+                ShowDialog("The animal smells heavily of ammonia.", 10000, 10f);
+            }
+        }
+        public async Task thatsmethedupman()
+        {
+            Tick -= thatsmethedupman;
+            PedData nchaped1data = new PedData();
+            Utilities.SetPedData(nchaped1.NetworkId, nchaped1data);
+            PedData nchaped2data = new PedData();
+            Utilities.SetPedData(nchaped2.NetworkId, nchaped2data);
+            Item nchamethbag = new Item();
+            {
+                nchamethbag.Name = "Bag with meth inside";
+                nchamethbag.IsIllegal = true;
+            }
+            Item nchamethpipe = new Item();
+            {
+                nchamethpipe.Name = "Meth pipe";
+                nchamethpipe.IsIllegal = true;
+            }
+            Random methmanaway = new Random();
+            int methmeyet = methmanaway.Next(1, 100 + 1);
+            if (methmeyet >= 10 && methmeyet <= 50)
+            {
+                nchaped1data.UsedDrugs[0] = PedData.Drugs.Meth;
+                nchaped1data.Items.Add(nchamethbag);
+                nchaped1data.Items.Add(nchamethbag);
+                nchaped1data.Items.Add(nchamethbag);
+                nchaped1data.Items.Add(nchamethpipe);
+            }
+            if (methmeyet >= 20 && methmeyet <= 80)
+            {
+                nchaped2data.UsedDrugs[0] = PedData.Drugs.Meth;
+                nchaped2data.Items.Add(nchamethpipe);
             }
         }
         public async override Task OnAccept()

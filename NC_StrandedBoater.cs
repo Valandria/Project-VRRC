@@ -10,11 +10,11 @@ using FivePD.API.Utils;
 namespace RangersoftheWildernessCallouts
 {
 
-    [CalloutProperties("NC Stranded Boater", "Valandria", "0.0.1")]
+    [CalloutProperties("NC Stranded Boater", "Valandria", "0.0.3")]
     public class NCStrandedBoater : Callout
     {
         private Vehicle ncsbboat;
-        Ped ncsbdriver, ncsbpassenger1, ncsbpassenger2, ncsbpassenger3, ncsbanimal;
+        private Ped ncsbdriver, ncsbpassenger1, ncsbpassenger2, ncsbpassenger3, ncsbanimal;
         private string[] ncsbboatList = { "tug", "Dinghy", "Jetmax", "Speeder", "Speeder2", "Squalo", "Submersible", "Submersible2", "Suntrap", "Toro", "Tropic", "Tropic2" };
         private Vector3[] boatcoordinates =
         {
@@ -110,20 +110,21 @@ namespace RangersoftheWildernessCallouts
             ncsbpassenger2.BlockPermanentEvents = true;
             ncsbpassenger3.AlwaysKeepTask = true;
             ncsbpassenger3.BlockPermanentEvents = true;
-            Random ncsbscenario = new Random();
-            int ncsbtalktalk = ncsbscenario.Next(1, 100 + 1);
-            if (ncsbtalktalk < 0)
-            {
-                Tick += fullsentitbro;
-            }
-            else if (ncsbtalktalk <= 0)
-            {
-                Tick += notmyboatdotjpeg;
-            }
-            else if (ncsbtalktalk <= 0)
-            {
-                Tick += huntingwithoutalicense;
-            }
+            Tick += fullsentitbro;  //Temporary tick
+            //Random ncsbscenario = new Random();
+            //int ncsbtalktalk = ncsbscenario.Next(1, 100 + 1);
+            //if (ncsbtalktalk >= 1)
+            //{
+            //    Tick += fullsentitbro;
+            //}
+            //else if (ncsbtalktalk <= 0)
+            //{
+            //    Tick += notmyboatdotjpeg;
+            //}
+            //else if (ncsbtalktalk <= 0)
+            //{
+            //    Tick += huntingwithoutalicense;
+            //}
         }
 
         public async Task fullsentitbro()
@@ -314,101 +315,101 @@ namespace RangersoftheWildernessCallouts
                 "Bro it's just going all out.",
                 "Vroom vroom!",
             };
-            PedQuestion ncsbpass1q3 = new PedQuestion();
-            ncsbpass1q3.Question = "Was this intentional or did they lose control?";
-            ncsbpass1q3.Answers = new List<string>
-            {
+            //PedQuestion ncsbpass1q3 = new PedQuestion();
+            //ncsbpass1q3.Question = "Was this intentional or did they lose control?";
+            //ncsbpass1q3.Answers = new List<string>
+            //{
 
-            };
-            PedQuestion ncsbpass1q4 = new PedQuestion();
-            ncsbpass1q4.Question = "Is this a common situation?";
-            ncsbpass1q4.Answers = new List<string>
-            {
+            //};
+            //PedQuestion ncsbpass1q4 = new PedQuestion();
+            //ncsbpass1q4.Question = "Is this a common situation?";
+            //ncsbpass1q4.Answers = new List<string>
+            //{
 
-            };
-            PedQuestion ncsbpass1q5 = new PedQuestion();
-            ncsbpass1q5.Question = "Have all of you been drinking?";
-            ncsbpass1q5.Answers = new List<string>
-            {
+            //};
+            //PedQuestion ncsbpass1q5 = new PedQuestion();
+            //ncsbpass1q5.Question = "Have all of you been drinking?";
+            //ncsbpass1q5.Answers = new List<string>
+            //{
 
-            };
-            PedQuestion ncsbpass1q6 = new PedQuestion();
-            ncsbpass1q6.Question = "";
-            ncsbpass1q6.Answers = new List<string>
-            {
+            //};
+            //PedQuestion ncsbpass1q6 = new PedQuestion();
+            //ncsbpass1q6.Question = "";
+            //ncsbpass1q6.Answers = new List<string>
+            //{
 
-            };
-            PedQuestion ncsbpass1q7 = new PedQuestion();
-            ncsbpass1q7.Question = "";
-            ncsbpass1q7.Answers = new List<string>
-            {
+            //};
+            //PedQuestion ncsbpass1q7 = new PedQuestion();
+            //ncsbpass1q7.Question = "";
+            //ncsbpass1q7.Answers = new List<string>
+            //{
 
-            };
-            PedQuestion ncsbpass1q8 = new PedQuestion();
-            ncsbpass1q8.Question = "";
-            ncsbpass1q8.Answers = new List<string>
-            {
+            //};
+            //PedQuestion ncsbpass1q8 = new PedQuestion();
+            //ncsbpass1q8.Question = "";
+            //ncsbpass1q8.Answers = new List<string>
+            //{
 
-            };
-            PedQuestion ncsbpass1q9 = new PedQuestion();
-            ncsbpass1q9.Question = "";
-            ncsbpass1q9.Answers = new List<string>
-            {
+            //};
+            //PedQuestion ncsbpass1q9 = new PedQuestion();
+            //ncsbpass1q9.Question = "";
+            //ncsbpass1q9.Answers = new List<string>
+            //{
 
-            };
-            PedQuestion ncsbpass1q10 = new PedQuestion();
-            ncsbpass1q10.Question = "";
-            ncsbpass1q10.Answers = new List<string>
-            {
+            //};
+            //PedQuestion ncsbpass1q10 = new PedQuestion();
+            //ncsbpass1q10.Question = "";
+            //ncsbpass1q10.Answers = new List<string>
+            //{
 
-            };
-            PedQuestion ncsbpass1q11 = new PedQuestion();
-            ncsbpass1q11.Question = "";
-            ncsbpass1q11.Answers = new List<string>
-            {
+            //};
+            //PedQuestion ncsbpass1q11 = new PedQuestion();
+            //ncsbpass1q11.Question = "";
+            //ncsbpass1q11.Answers = new List<string>
+            //{
 
-            };
-            PedQuestion ncsbpass1q12 = new PedQuestion();
-            ncsbpass1q12.Question = "";
-            ncsbpass1q12.Answers = new List<string>
-            {
+            //};
+            //PedQuestion ncsbpass1q12 = new PedQuestion();
+            //ncsbpass1q12.Question = "";
+            //ncsbpass1q12.Answers = new List<string>
+            //{
 
-            };
-            PedQuestion ncsbpass1q13 = new PedQuestion();
-            ncsbpass1q13.Question = "";
-            ncsbpass1q13.Answers = new List<string>
-            {
+            //};
+            //PedQuestion ncsbpass1q13 = new PedQuestion();
+            //ncsbpass1q13.Question = "";
+            //ncsbpass1q13.Answers = new List<string>
+            //{
 
-            };
-            PedQuestion ncsbpass1q14 = new PedQuestion();
-            ncsbpass1q14.Question = "";
-            ncsbpass1q14.Answers = new List<string>
-            {
-
-            };
-            PedQuestion ncsbpass1q15 = new PedQuestion();
-            ncsbpass1q15.Question = "";
-            ncsbpass1q15.Answers = new List<string>
-            {
-
-            };
-            PedQuestion ncsbpass1q16 = new PedQuestion();
-            ncsbpass1q16.Question = "";
-            ncsbpass1q16.Answers = new List<string>
-            {
-
-            };
+            //};
+            //PedQuestion ncsbpass1q14 = new PedQuestion();
+            //ncsbpass1q14.Question = "";
+            //ncsbpass1q14.Answers = new List<string>
+            //{
+            //
+            //};
+            //PedQuestion ncsbpass1q15 = new PedQuestion();
+            //ncsbpass1q15.Question = "";
+            //ncsbpass1q15.Answers = new List<string>
+            //{
+            //
+            //};
+            //PedQuestion ncsbpass1q16 = new PedQuestion();
+            //ncsbpass1q16.Question = "";
+            //ncsbpass1q16.Answers = new List<string>
+            //{
+            //
+            //};
         }
 
-        public async Task notmyboatdotjpeg()
-        {
+        //public async Task notmyboatdotjpeg()
+        //{
+        //
+        //}
 
-        }
-
-        public async Task huntingwithoutalicense()
-        {
-
-        }
+        //public async Task huntingwithoutalicense()
+        //{
+        //
+        //}
 
         public async override Task OnAccept()
         {
