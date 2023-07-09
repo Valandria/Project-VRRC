@@ -14,6 +14,7 @@ namespace RangersoftheWildernessCallouts
     {
         private Ped ncamvadriver, ncamvapassenger, ncamvaanimal;
         private Vehicle ncamvavehicle;
+        private string[] vehicleList = { "adder", "carbonrs", "oracle", "oracle2", "phoenix", "vigero", "zentorno", "youga", "youga2", "sultan", "sultanrs", "ruiner", "ruiner2", "ruiner3", "burrito", "burrito2", "burrito3", "gburrito", "bagger", "buffalo", "buffalo2", "comet2", "comet3", "felon" };
         private Vector3[] coordinates =
         {
         new Vector3(1663.35f, 2866.89f, 41.72f),
@@ -124,41 +125,14 @@ namespace RangersoftheWildernessCallouts
             StartDistance = 200f;
         }
 
-        public override async Task OnAccept()
+        public async override void OnStart(Ped player)
         {
-            InitBlip(25);
+            base.OnStart(player);
 
-            var cars = new[]
-              {
-               VehicleHash.Adder,
-               VehicleHash.CarbonRS,
-               VehicleHash.Oracle,
-               VehicleHash.Oracle2,
-               VehicleHash.Phoenix,
-               VehicleHash.Vigero,
-               VehicleHash.Zentorno,
-               VehicleHash.Youga2,
-               VehicleHash.Youga,
-               VehicleHash.Sultan,
-               VehicleHash.SultanRS,
-               VehicleHash.Sentinel,
-               VehicleHash.Sentinel2,
-               VehicleHash.Ruiner,
-               VehicleHash.Ruiner2,
-               VehicleHash.Ruiner3,
-               VehicleHash.Burrito,
-               VehicleHash.Burrito2,
-               VehicleHash.Burrito3,
-               VehicleHash.GBurrito,
-               VehicleHash.Bagger,
-               VehicleHash.Buffalo,
-               VehicleHash.Buffalo2,
-               VehicleHash.Comet2,
-               VehicleHash.Comet3,
-               VehicleHash.Felon,
-           };
-
-            ncamvavehicle = await SpawnVehicle(cars[RandomUtils.Random.Next(cars.Length)], Location, 0);
+            Random ncmamvavehdecider = new Random();
+            string ncmamvavehicle = vehicleList[ncmamvavehdecider.Next(vehicleList.Length)];
+            VehicleHash ncmvamvavehicleHash = (VehicleHash)API.GetHashKey(ncmamvavehicle);
+            ncamvavehicle = await SpawnVehicle(ncmvamvavehicleHash, Location, 0);
             ncamvavehicle.Deform(Location, 10000, 100);
             ncamvavehicle.EngineHealth = 5;
             ncamvavehicle.BodyHealth = 1;
@@ -221,11 +195,6 @@ namespace RangersoftheWildernessCallouts
                 ncamvadriver.Kill();
                 Tick += ncmamvanoseatbelt;
             }
-        }
-
-        public override void OnStart(Ped player)
-        {
-            base.OnStart(player);
 
             ncamvavehicle.Deform(Location, 10000, 100);
             ncamvadriver.AttachBlip();
@@ -239,34 +208,34 @@ namespace RangersoftheWildernessCallouts
             //PedQuestion ncamvadq1 = new PedQuestion();
             //ncamvadq1.Question = "";
             //ncamvadq1.Answers = new List<string>
-        //{
-        //    "",
-        //    "",
-        //};
+            //{
+            //    "",
+            //    "",
+            //};
 
             //PedQuestion ncamvadq2 = new PedQuestion();
             //ncamvadq2.Question = "";
             //ncamvadq2.Answers = new List<string>
-        //{
-        //    "",
-        //    "",
-        //};
+            //{
+            //    "",
+            //    "",
+            //};
 
             //PedQuestion ncamvadq3 = new PedQuestion();
             //ncamvadq3.Question = "";
             //ncamvadq3.Answers = new List<string>
-        //{
-        //    "",
-        //    "",
-        //};
+            //{
+            //    "",
+            //    "",
+            //};
 
             //PedQuestion ncamvadq4 = new PedQuestion();
             //ncamvadq4.Question = "";
             //ncamvadq4.Answers = new List<string>
-        //{
-        //    "",
-        //    "",
-        //};
+            //{
+            //    "",
+            //    "",
+            //};
 
             Random random = new Random();
             int x = random.Next(1, 100 + 1);
@@ -326,7 +295,7 @@ namespace RangersoftheWildernessCallouts
             float noseatbeltnotification = Game.PlayerPed.Position.DistanceTo(ncamvadriver.Position);
             if (noseatbeltnotification < 15f)
             {
-                ShowDialog("The driver was ejected from their vehicle.",10000,15f);
+                ShowDialog("The driver was ejected from their vehicle.", 10000, 15f);
             }
 
             float noseatbeltvehiclenotification = Game.PlayerPed.Position.DistanceTo(ncamvavehicle.Position);
@@ -334,6 +303,11 @@ namespace RangersoftheWildernessCallouts
             {
                 ShowDialog("There seems to be a seatbelt avoidance device installed on the driver seatbelt.", 10000, 10f);
             }
+        }
+        public override async Task OnAccept()
+        {
+            InitBlip();
+            UpdateData();
         }
     }
 }
