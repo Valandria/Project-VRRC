@@ -183,12 +183,23 @@ namespace RangersoftheWildernessCallouts
             Tick -= methimals;
             PedData nchaped2data = new PedData();
             Utilities.SetPedData(nchaped2.NetworkId, nchaped2data);
+
             Random methimalsgo = new Random();
             int methmeat = methimalsgo.Next(1, 100 + 1);
             if (methmeat > 32 && methmeat < 67)
             {
                 nchaped2data.UsedDrugs[0] = PedData.Drugs.Meth;
-                ShowDialog("The animal smells heavily of ammonia.", 10000, 10f);
+                Tick += methimalsdialog;
+            }
+        }
+
+        public async Task methimalsdialog()
+        {
+            Tick -= methimalsdialog;
+            float hammdialogchecker = Game.PlayerPed.Position.DistanceTo(nchaped2.Position);
+            if (hammdialogchecker < 10f)
+            {
+                ShowDialog("The animal smells heavily of ammonia (urine) and has a yellowish white powder around its mouth.", 10000, 10f);
             }
         }
         public async Task thatsmethedupman()

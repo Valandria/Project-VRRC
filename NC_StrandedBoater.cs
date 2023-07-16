@@ -199,6 +199,7 @@ namespace RangersoftheWildernessCallouts
             Item Openbottle = new Item
             {
                 Name = "Pißwasser bottle, open",
+                IsIllegal = true
             };
             Item Tallboyopen = new Item
             {
@@ -218,17 +219,17 @@ namespace RangersoftheWildernessCallouts
             Item OpenCan = new Item
             {
                 Name = "Pißwasser can, open",
-                IsIllegal = false
+                IsIllegal = true
             };
             Item EmptyCan = new Item
             {
                 Name = "Empty Pißwasser can",
-                IsIllegal = false
+                IsIllegal = true
             };
             Item Tallboyempty = new Item
             {
                 Name = "Empty Pißwasser Tallboy",
-                IsIllegal = false
+                IsIllegal = true
             };
 
             Random ncsbitemlistingchance = new Random();

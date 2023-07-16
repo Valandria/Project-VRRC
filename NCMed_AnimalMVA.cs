@@ -115,7 +115,7 @@ namespace RangersoftheWildernessCallouts
         new Vector3(-2539.43f, 3595.74f, 11.92f),
         new Vector3(-2517.54f, 3660.68f, 13.1f),
         new Vector3(-2490f, 3673.92f, 13.91f),
-    };
+        };
         public NCAnimalMVA()
         {
             InitInfo(coordinates[RandomUtils.Random.Next(coordinates.Length)]);
