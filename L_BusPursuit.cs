@@ -7,14 +7,14 @@ using FivePD.API;
 using FivePD.API.Utils;
 
 
-namespace stolenbusCallout
+namespace LocalAutoUnion404
 {
     
     [CalloutProperties("Local Bus Pursuit", "Valandria", "0.0.1")]
     public class BusPursuit : Callout
     {
-        private Vehicle stolenbus;
-        Ped driver;
+        private Vehicle lbpstolenbus;
+        Ped lbpdriver;
         public BusPursuit()
         {
 
@@ -33,28 +33,28 @@ namespace stolenbusCallout
         {
             base.OnStart(player);
             Random random = new Random();
-            stolenbus = await SpawnVehicle(VehicleHash.Bus, Location,12);
-            driver = await SpawnPed(RandomUtils.GetRandomPed(), Location + 2);
-            driver.SetIntoVehicle(stolenbus, VehicleSeat.Driver);
+            lbpstolenbus = await SpawnVehicle(VehicleHash.Bus, Location,12);
+            lbpdriver = await SpawnPed(RandomUtils.GetRandomPed(), Location + 2);
+            lbpdriver.SetIntoVehicle(lbpstolenbus, VehicleSeat.Driver);
             
-            driver.AlwaysKeepTask = true;
-            driver.BlockPermanentEvents = true;
+            lbpdriver.AlwaysKeepTask = true;
+            lbpdriver.BlockPermanentEvents = true;
             
             PlayerData playerData = Utilities.GetPlayerData();
             string displayName = playerData.DisplayName;
-            VehicleData datastolenbus = await Utilities.GetVehicleData(stolenbus.NetworkId);
-            string vehicleName = datastolenbus.Name;
-            datastolenbus.Flag = "Stolen";
+            VehicleData datalbpstolenbus = await Utilities.GetVehicleData(lbpstolenbus.NetworkId);
+            string vehicleName = datalbpstolenbus.Name;
+            datalbpstolenbus.Flag = "Stolen";
             Notify("~y~Officer ~b~" + displayName + ",~y~ the suspects are driving a " + vehicleName + "!");
                 
-            driver.Task.CruiseWithVehicle(stolenbus, 2f, 387);
-            stolenbus.AttachBlip();
-            driver.AttachBlip();
-            API.AddBlipForEntity(stolenbus.GetHashCode());
-            API.AddBlipForEntity(driver.GetHashCode());
+            lbpdriver.Task.CruiseWithVehicle(lbpstolenbus, 2f, 387);
+            lbpstolenbus.AttachBlip();
+            lbpdriver.AttachBlip();
+            API.AddBlipForEntity(lbpstolenbus.GetHashCode());
+            API.AddBlipForEntity(lbpdriver.GetHashCode());
 
-            Random stolenbusscenario = new Random();
-            int buspursuitending = stolenbusscenario.Next(1, 100 + 1);
+            Random lbpstolenbusscenario = new Random();
+            int buspursuitending = lbpstolenbusscenario.Next(1, 100 + 1);
             if (buspursuitending < 25)
             {
                 Tick += Methmademedoitagainofficer;

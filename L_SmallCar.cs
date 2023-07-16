@@ -6,10 +6,10 @@ using FivePD.API;
 using FivePD.API.Utils;
 
 
-namespace CarCallout
+namespace LocalAutoUnion404
 {
 
-    [CalloutProperties("Local Small Vehicle Callout", "Valandria", "0.0.4")]
+    [CalloutProperties("Local Small Vehicle", "Valandria", "0.0.4")]
     public class SmallCar : Callout
     {
         private Vehicle tugtug;
