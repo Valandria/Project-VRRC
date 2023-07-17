@@ -15,8 +15,6 @@ namespace RangersoftheWilderness.net
         private Vehicle ncihvehicle, ncihmethvehicle;
         private string[] vehicleList = { "bison", "bison2", "bison3", "bobcatxl", "bodhi2", "dune", "duneloader", "mesa", "mesa2", "mesa3", "bifta" };
         private string[] methvehicleList = { "camper", "journey" };
-        private string[] hunterpedlist = { "hunter", "huntercutscene", "taphillbilly", "hillbilly01amm", "hillbilly02amm" };
-        private string[] suspiciouspedlist = { "methhead01amy", "methfemale01", "rurmeth01amm", "rurmeth01afy", "methmale01", "methhead01amy" };
         private string[] weaponlist = { "pumpshotgun", "assaultrifle", "carbinerifle", "tacticalrifle", "marksmanrifle" };
         private Vector3[] coordinates =
         {
@@ -51,27 +49,23 @@ namespace RangersoftheWilderness.net
             int ncihscenariochoice = ncihscenario.Next(1, 100 + 1);
             if (ncihscenariochoice <= 26)
             {
-                Tick += HuntersOnTheProwl;
-                CalloutDescription = "Reports coming in of hunters near the roadway actively hunting, respond code 3.";
-                ResponseCode = 3;
+                CalloutDescription = "Reports coming in of hunters near the roadway actively hunting, respond code 2.";
+                ResponseCode = 2;
             };
             if (ncihscenariochoice >= 27 && ncihscenariochoice <= 51)
             {
-                Tick += ComingUpEmpty;
                 CalloutDescription = "Reports coming in of hunters near the roadway, respond code 2.";
                 ResponseCode = 2;
             };
             if (ncihscenariochoice >= 52 && ncihscenariochoice <= 75)
             {
-                Tick += SomethingSmellsMethy;
                 CalloutDescription = "Reports of suspicious hunters near the roadway, respond code 2.";
                 ResponseCode = 2;
             };
             if (ncihscenariochoice >= 76)
             {
-                Tick += AbandonedVehicle;
-                CalloutDescription = "Reports of a vehicle abandoned by hunters near the roadway, respond code 1";
-                ResponseCode = 1;
+                CalloutDescription = "Reports of a vehicle possibly abandoned by hunters near the roadway, respond code 2";
+                ResponseCode = 2;
             };
             StartDistance = 200f;
         }
@@ -85,34 +79,131 @@ namespace RangersoftheWilderness.net
         {
             base.OnStart(player);
 
-            API.Wait(1000);
             Random ncihvehicledecider = new Random();
             string ncihvehiclechoice = vehicleList[ncihvehicledecider.Next(vehicleList.Length)];
             VehicleHash ncihvehicleHash = (VehicleHash)API.GetHashKey(ncihvehiclechoice);
             ncihvehicle = await SpawnVehicle(ncihvehicleHash, Location, 0);
             ncihvehicle.IsPersistent = true;
+
+            API.Wait(250);
+
+            Random NCIHscenario = new Random();
+            int NCIHscenariodecision = NCIHscenario.Next(1, 100 + 1);
+            if (NCIHscenariodecision < 40)
+            {
+                Tick += HuntersOnTheProwl;
+            }
+            if (NCIHscenariodecision >= 40 && NCIHscenariodecision < 80)
+            {
+                Tick += ComingUpEmpty;
+            }
+            if (NCIHscenariodecision >= 80 && NCIHscenariodecision < 90)
+            {
+                Tick += SomethingSmellsMethy;
+            }
+            if (NCIHscenariodecision >= 90)
+            {
+                Tick += AbandonedVehicle;
+            }
         }
 
         public async Task HuntersOnTheProwl()
         {
             Tick -= HuntersOnTheProwl;
-            
+
             Random hotphunter1decider = new Random();
+            API.Wait(250);
             Random hotphunter2decider = new Random();
+            API.Wait(250);
             Random hotphunter3decider = new Random();
+            API.Wait(250);
             Random hotphunter4decider = new Random();
-            string hotphunter1choice = hunterpedlist[hotphunter1decider.Next(hunterpedlist.Length)];
-            string hotphunter2choice = hunterpedlist[hotphunter2decider.Next(hunterpedlist.Length)];
-            string hotphunter3choice = hunterpedlist[hotphunter3decider.Next(hunterpedlist.Length)];
-            string hotphunter4choice = hunterpedlist[hotphunter4decider.Next(hunterpedlist.Length)];
-            PedHash hotphunter1pedHash = (PedHash)API.GetHashKey(hotphunter1choice);
-            PedHash hotphunter2pedHash = (PedHash)API.GetHashKey(hotphunter2choice);
-            PedHash hotphunter3pedHash = (PedHash)API.GetHashKey(hotphunter3choice);
-            PedHash hotphunter4pedHash = (PedHash)API.GetHashKey(hotphunter4choice);
-            ncihped1 = await SpawnPed(hotphunter1pedHash, Location + 3, 0);
-            ncihped2 = await SpawnPed(hotphunter2pedHash, Location + 5, 0);
-            ncihped3 = await SpawnPed(hotphunter3pedHash, Location + 2, 0);
-            ncihped4 = await SpawnPed(hotphunter4pedHash, Location + 3, 0);
+            int hotphunter1choice = hotphunter1decider.Next(1, 50);
+            int hotphunter2choice = hotphunter2decider.Next(1, 50);
+            int hotphunter3choice = hotphunter3decider.Next(1, 50);
+            int hotphunter4choice = hotphunter4decider.Next(1, 50);
+            if (hotphunter1choice <= 10)
+            {
+                ncihped1 = await SpawnPed(PedHash.Hunter, Location + 3, 0);
+            }
+            if (hotphunter1choice > 10 && hotphunter1choice <= 20)
+            {
+                ncihped1 = await SpawnPed(PedHash.HunterCutscene, Location + 3, 0);
+            }
+            if (hotphunter1choice > 20 && hotphunter1choice <= 30)
+            {
+                ncihped1 = await SpawnPed(PedHash.Taphillbilly, Location + 3, 0);
+            }
+            if (hotphunter1choice > 30 && hotphunter1choice <= 40)
+            {
+                ncihped1 = await SpawnPed(PedHash.Hillbilly01AMM, Location + 3, 0);
+            }
+            if (hotphunter1choice > 40 && hotphunter1choice <= 50)
+            {
+                ncihped1 = await SpawnPed(PedHash.Hillbilly02AMM, Location + 3, 0);
+            }
+            if (hotphunter2choice <= 10)
+            {
+                ncihped1 = await SpawnPed(PedHash.Hunter, Location + 5, 0);
+            }
+            if (hotphunter2choice > 10 && hotphunter1choice <= 20)
+            {
+                ncihped1 = await SpawnPed(PedHash.HunterCutscene, Location + 5, 0);
+            }
+            if (hotphunter2choice > 20 && hotphunter1choice <= 30)
+            {
+                ncihped1 = await SpawnPed(PedHash.Taphillbilly, Location + 5, 0);
+            }
+            if (hotphunter2choice > 30 && hotphunter1choice <= 40)
+            {
+                ncihped1 = await SpawnPed(PedHash.Hillbilly01AMM, Location + 5, 0);
+            }
+            if (hotphunter2choice > 40 && hotphunter1choice <= 50)
+            {
+                ncihped1 = await SpawnPed(PedHash.Hillbilly02AMM, Location + 5, 0);
+            }
+            if (hotphunter3choice <= 10)
+            {
+                ncihped1 = await SpawnPed(PedHash.Hunter, Location + 2, 0);
+            }
+            if (hotphunter3choice > 10 && hotphunter1choice <= 20)
+            {
+                ncihped1 = await SpawnPed(PedHash.HunterCutscene, Location + 2, 0);
+            }
+            if (hotphunter3choice > 20 && hotphunter1choice <= 30)
+            {
+                ncihped1 = await SpawnPed(PedHash.Taphillbilly, Location + 2, 0);
+            }
+            if (hotphunter3choice > 30 && hotphunter1choice <= 40)
+            {
+                ncihped1 = await SpawnPed(PedHash.Hillbilly01AMM, Location + 2, 0);
+            }
+            if (hotphunter3choice > 40 && hotphunter1choice <= 50)
+            {
+                ncihped1 = await SpawnPed(PedHash.Hillbilly02AMM, Location + 2, 0);
+            }
+            if (hotphunter4choice <= 10)
+            {
+                ncihped1 = await SpawnPed(PedHash.Hunter, Location + 3, 0);
+            }
+            if (hotphunter4choice > 10 && hotphunter1choice <= 20)
+            {
+                ncihped1 = await SpawnPed(PedHash.HunterCutscene, Location + 3, 0);
+            }
+            if (hotphunter4choice > 20 && hotphunter1choice <= 30)
+            {
+                ncihped1 = await SpawnPed(PedHash.Taphillbilly, Location + 3, 0);
+            }
+            if (hotphunter4choice > 30 && hotphunter1choice <= 40)
+            {
+                ncihped1 = await SpawnPed(PedHash.Hillbilly01AMM, Location + 3, 0);
+            }
+            if (hotphunter4choice > 40 && hotphunter1choice <= 50)
+            {
+                ncihped1 = await SpawnPed(PedHash.Hillbilly02AMM, Location + 3, 0);
+            }
+
+            API.Wait(250);
 
             ncihped1.AlwaysKeepTask = true;
             ncihped2.AlwaysKeepTask = true;
@@ -266,8 +357,8 @@ namespace RangersoftheWilderness.net
                 hotpdrinkoptions.Add(hotpopencan);
 
                 if (potpdrinkingsmellnotification < 15f)
-                { 
-                    ShowDialog("Heavy smell of alcohol from the vehicle", 10000, 10f); 
+                {
+                    ShowDialog("Heavy smell of alcohol from the vehicle", 10000, 10f);
                 }
             }
             if (hotpdrinkingchance > 15 && hotpdrinkingchance <= 30)
@@ -284,12 +375,16 @@ namespace RangersoftheWilderness.net
                 hotpdrinkoptions.Add(hotptallboyopen);
                 hotpdrinkoptions.Add(hotpsixpack);
 
-                if (potpdrinkingsmellnotification < 15f)
+                if (potpdrinkingsmellnotification < 10f)
                 {
                     ShowDialog("Heavy smell of alcohol from the vehicle", 10000, 10f);
                 }
             }
 
+            ncihped1.SetData(hotphunter1data);
+            ncihped2.SetData(hotphunter2data);
+            ncihped3.SetData(hotphunter3data);
+            ncihped4.SetData(hotphunter4data);
             hotpvehicledata.Items = hotpdrinkoptions;
             Utilities.SetVehicleData(ncihvehicle.NetworkId, hotpvehicledata);
         }
@@ -321,7 +416,7 @@ namespace RangersoftheWilderness.net
         public async Task hotpdrinkingbuddies()
         {
             Tick -= hotpdrinkingbuddies;
-            
+
         }
 
         public async Task ComingUpEmpty()
@@ -329,22 +424,96 @@ namespace RangersoftheWilderness.net
             Tick -= ComingUpEmpty;
 
             Random cuehunter1decider = new Random();
+            API.Wait(250);
             Random cuehunter2decider = new Random();
+            API.Wait(250);
             Random cuehunter3decider = new Random();
+            API.Wait(250);
             Random cuehunter4decider = new Random();
-            string cuehunter1choice = hunterpedlist[cuehunter1decider.Next(hunterpedlist.Length)];
-            string cuehunter2choice = hunterpedlist[cuehunter2decider.Next(hunterpedlist.Length)];
-            string cuehunter3choice = hunterpedlist[cuehunter3decider.Next(hunterpedlist.Length)];
-            string cuehunter4choice = hunterpedlist[cuehunter4decider.Next(hunterpedlist.Length)];
-            PedHash cuehunter1pedHash = (PedHash)API.GetHashKey(cuehunter1choice);
-            PedHash cuehunter2pedHash = (PedHash)API.GetHashKey(cuehunter2choice);
-            PedHash cuehunter3pedHash = (PedHash)API.GetHashKey(cuehunter3choice);
-            PedHash cuehunter4pedHash = (PedHash)API.GetHashKey(cuehunter4choice);
-
-            ncihped1 = await SpawnPed(cuehunter1pedHash, Location + 3, 0);
-            ncihped2 = await SpawnPed(cuehunter2pedHash, Location + 5, 0);
-            ncihped3 = await SpawnPed(cuehunter3pedHash, Location + 2, 0);
-            ncihped4 = await SpawnPed(cuehunter4pedHash, Location + 3, 0);
+            int cuehunter1choice = cuehunter1decider.Next(1, 50);
+            int cuehunter2choice = cuehunter2decider.Next(1, 50);
+            int cuehunter3choice = cuehunter3decider.Next(1, 50);
+            int cuehunter4choice = cuehunter4decider.Next(1, 50);
+            if (cuehunter1choice <= 10)
+            {
+                ncihped1 = await SpawnPed(PedHash.Hunter, Location + 3, 0);
+            }
+            if (cuehunter1choice > 10 && cuehunter1choice <= 20)
+            {
+                ncihped1 = await SpawnPed(PedHash.HunterCutscene, Location + 3, 0);
+            }
+            if (cuehunter1choice > 20 && cuehunter1choice <= 30)
+            {
+                ncihped1 = await SpawnPed(PedHash.Taphillbilly, Location + 3, 0);
+            }
+            if (cuehunter1choice > 30 && cuehunter1choice <= 40)
+            {
+                ncihped1 = await SpawnPed(PedHash.Hillbilly01AMM, Location + 3, 0);
+            }
+            if (cuehunter1choice > 40 && cuehunter1choice <= 50)
+            {
+                ncihped1 = await SpawnPed(PedHash.Hillbilly02AMM, Location + 3, 0);
+            }
+            if (cuehunter2choice <= 10)
+            {
+                ncihped2 = await SpawnPed(PedHash.Hunter, Location + 5, 0);
+            }
+            if (cuehunter2choice > 10 && cuehunter2choice <= 20)
+            {
+                ncihped2 = await SpawnPed(PedHash.HunterCutscene, Location + 5, 0);
+            }
+            if (cuehunter2choice > 20 && cuehunter2choice <= 30)
+            {
+                ncihped2 = await SpawnPed(PedHash.Taphillbilly, Location + 5, 0);
+            }
+            if (cuehunter2choice > 30 && cuehunter2choice <= 40)
+            {
+                ncihped2 = await SpawnPed(PedHash.Hillbilly01AMM, Location + 5, 0);
+            }
+            if (cuehunter2choice > 40 && cuehunter2choice <= 50)
+            {
+                ncihped2 = await SpawnPed(PedHash.Hillbilly02AMM, Location + 5, 0);
+            }
+            if (cuehunter3choice <= 10)
+            {
+                ncihped3 = await SpawnPed(PedHash.Hunter, Location + 2, 0);
+            }
+            if (cuehunter3choice > 10 && cuehunter3choice <= 20)
+            {
+                ncihped3 = await SpawnPed(PedHash.HunterCutscene, Location + 2, 0);
+            }
+            if (cuehunter3choice > 20 && cuehunter3choice <= 30)
+            {
+                ncihped3 = await SpawnPed(PedHash.Taphillbilly, Location + 2, 0);
+            }
+            if (cuehunter3choice > 30 && cuehunter3choice <= 40)
+            {
+                ncihped3 = await SpawnPed(PedHash.Hillbilly01AMM, Location + 2, 0);
+            }
+            if (cuehunter3choice > 40 && cuehunter3choice <= 50)
+            {
+                ncihped3 = await SpawnPed(PedHash.Hillbilly02AMM, Location + 2, 0);
+            }
+            if (cuehunter4choice <= 10)
+            {
+                ncihped4 = await SpawnPed(PedHash.Hunter, Location + 3, 0);
+            }
+            if (cuehunter4choice > 10 && cuehunter4choice <= 20)
+            {
+                ncihped4 = await SpawnPed(PedHash.HunterCutscene, Location + 3, 0);
+            }
+            if (cuehunter4choice > 20 && cuehunter4choice <= 30)
+            {
+                ncihped4 = await SpawnPed(PedHash.Taphillbilly, Location + 3, 0);
+            }
+            if (cuehunter4choice > 30 && cuehunter4choice <= 40)
+            {
+                ncihped4 = await SpawnPed(PedHash.Hillbilly01AMM, Location + 3, 0);
+            }
+            if (cuehunter4choice > 40 && cuehunter4choice <= 50)
+            {
+                ncihped4 = await SpawnPed(PedHash.Hillbilly02AMM, Location + 3, 0);
+            }
 
             ncihped1.AlwaysKeepTask = true;
             ncihped2.AlwaysKeepTask = true;
@@ -473,11 +642,10 @@ namespace RangersoftheWilderness.net
                 cuedrinkoptions.Add(cueemptycan);
                 cuedrinkoptions.Add(cueopencan);
                 cuedrinkoptions.Add(cueopencan);
-
-                if (cuedrinkingsmellnotification < 15f)
-                {
-                    ShowDialog("Heavy smell of alcohol from the vehicle", 10000, 10f);
-                }
+            }
+            if (cuedrinkingsmellnotification < 15f && cuedrinkingchance <= 15)
+            {
+                ShowDialog("Heavy smell of alcohol from the vehicle", 10000, 10f);
             }
             if (cuedrinkingchance > 15 && cuedrinkingchance <= 30)
             {
@@ -492,12 +660,16 @@ namespace RangersoftheWilderness.net
                 cuedrinkoptions.Add(cuetallboyopen);
                 cuedrinkoptions.Add(cuetallboyopen);
                 cuedrinkoptions.Add(cuesixpack);
-
-                if (cuedrinkingsmellnotification < 15f)
-                {
-                    ShowDialog("Heavy smell of alcohol from the vehicle", 10000, 10f);
-                }
             }
+            if (cuedrinkingsmellnotification < 15f && cuedrinkingchance > 15 && cuedrinkingchance <= 30)
+            {
+                ShowDialog("Heavy smell of alcohol from the vehicle", 10000, 10f);
+            }
+
+            ncihped1.SetData(cuehunter1data);
+            ncihped2.SetData(cuehunter2data);
+            ncihped3.SetData(cuehunter3data);
+            ncihped4.SetData(cuehunter4data);
 
             cuevehicledata.Items = cuedrinkoptions;
             Utilities.SetVehicleData(ncihvehicle.NetworkId, cuevehicledata);
@@ -516,22 +688,98 @@ namespace RangersoftheWilderness.net
             API.Wait(500);
 
             Random ssmhunter1decider = new Random();
+            API.Wait(250);
             Random ssmhunter2decider = new Random();
+            API.Wait(250);
             Random ssmmeth1decider = new Random();
+            API.Wait(250);
             Random ssmmeth2decider = new Random();
-            string ssmhunter1choice = hunterpedlist[ssmhunter1decider.Next(hunterpedlist.Length)];
-            string ssmhunter2choice = hunterpedlist[ssmhunter2decider.Next(hunterpedlist.Length)];
-            string ssmmeth1choice = hunterpedlist[ssmmeth1decider.Next(suspiciouspedlist.Length)];
-            string ssmmeth2choice = hunterpedlist[ssmmeth2decider.Next(suspiciouspedlist.Length)];
-            PedHash ssmhunter1pedHash = (PedHash)API.GetHashKey(ssmhunter1choice);
-            PedHash ssmhunter2pedHash = (PedHash)API.GetHashKey(ssmhunter2choice);
-            PedHash ssmmeth1pedHash = (PedHash)API.GetHashKey(ssmmeth1choice);
-            PedHash ssmmeth2pedHash = (PedHash)API.GetHashKey(ssmmeth2choice);
+            int ssmhunter1choice = ssmhunter1decider.Next(1, 50);
+            int ssmhunter2choice = ssmhunter2decider.Next(1, 50);
+            int ssmmeth1choice = ssmmeth1decider.Next(1, 50);
+            int ssmmeth2choice = ssmmeth2decider.Next(1, 50);
+            if (ssmhunter1choice <= 10)
+            {
+                ncihped1 = await SpawnPed(PedHash.Hunter, Location + 3, 0);
+            }
+            if (ssmhunter1choice > 10 && ssmhunter1choice <= 20)
+            {
+                ncihped1 = await SpawnPed(PedHash.HunterCutscene, Location + 3, 0);
+            }
+            if (ssmhunter1choice > 20 && ssmhunter1choice <= 30)
+            {
+                ncihped1 = await SpawnPed(PedHash.Taphillbilly, Location + 3, 0);
+            }
+            if (ssmhunter1choice > 30 && ssmhunter1choice <= 40)
+            {
+                ncihped1 = await SpawnPed(PedHash.Hillbilly01AMM, Location + 3, 0);
+            }
+            if (ssmhunter1choice > 40 && ssmhunter1choice <= 50)
+            {
+                ncihped1 = await SpawnPed(PedHash.Hillbilly02AMM, Location + 3, 0);
+            }
+            if (ssmhunter2choice <= 10)
+            {
+                ncihped1 = await SpawnPed(PedHash.Hunter, Location + 5, 0);
+            }
+            if (ssmhunter2choice > 10 && ssmhunter2choice <= 20)
+            {
+                ncihped1 = await SpawnPed(PedHash.HunterCutscene, Location + 5, 0);
+            }
+            if (ssmhunter2choice > 20 && ssmhunter2choice <= 30)
+            {
+                ncihped1 = await SpawnPed(PedHash.Taphillbilly, Location + 5, 0);
+            }
+            if (ssmhunter2choice > 30 && ssmhunter2choice <= 40)
+            {
+                ncihped1 = await SpawnPed(PedHash.Hillbilly01AMM, Location + 5, 0);
+            }
+            if (ssmhunter2choice > 40 && ssmhunter2choice <= 50)
+            {
+                ncihped1 = await SpawnPed(PedHash.Hillbilly02AMM, Location + 5, 0);
+            }
+            if (ssmmeth1choice <= 10)
+            {
+                ncihped1 = await SpawnPed(PedHash.Rurmeth01AFY, Location + 2, 0);
+            }
+            if (ssmmeth1choice > 10 && ssmmeth1choice <= 20)
+            {
+                ncihped1 = await SpawnPed(PedHash.Rurmeth01AMM, Location + 2, 0);
+            }
+            if (ssmmeth1choice > 20 && ssmmeth1choice <= 30)
+            {
+                ncihped1 = await SpawnPed(PedHash.MethFemale01, Location + 2, 0);
+            }
+            if (ssmmeth1choice > 30 && ssmmeth1choice <= 40)
+            {
+                ncihped1 = await SpawnPed(PedHash.Methhead01AMY, Location + 2, 0);
+            }
+            if (ssmmeth1choice > 40 && ssmmeth1choice <= 50)
+            {
+                ncihped1 = await SpawnPed(PedHash.MethMale01, Location + 2, 0);
+            }
+            if (ssmmeth2choice <= 10)
+            {
+                ncihped1 = await SpawnPed(PedHash.Hunter, Location + 3, 0);
+            }
+            if (ssmmeth2choice > 10 && ssmmeth2choice <= 20)
+            {
+                ncihped1 = await SpawnPed(PedHash.HunterCutscene, Location + 3, 0);
+            }
+            if (ssmmeth2choice > 20 && ssmmeth2choice <= 30)
+            {
+                ncihped1 = await SpawnPed(PedHash.Taphillbilly, Location + 3, 0);
+            }
+            if (ssmmeth2choice > 30 && ssmmeth2choice <= 40)
+            {
+                ncihped1 = await SpawnPed(PedHash.Hillbilly01AMM, Location + 3, 0);
+            }
+            if (ssmmeth2choice > 40 && ssmmeth2choice <= 50)
+            {
+                ncihped1 = await SpawnPed(PedHash.Hillbilly02AMM, Location + 3, 0);
+            }
 
-            ncihped1 = await SpawnPed(ssmhunter1pedHash, Location + 3, 0);
-            ncihped2 = await SpawnPed(ssmhunter2pedHash, Location + 5, 0);
-            ncihped3 = await SpawnPed(ssmmeth1pedHash, Location + 2, 0);
-            ncihped4 = await SpawnPed(ssmmeth2pedHash, Location + 3, 0);
+            API.Wait(250);
 
             ncihped1.AlwaysKeepTask = true;
             ncihped2.AlwaysKeepTask = true;
@@ -647,6 +895,8 @@ namespace RangersoftheWilderness.net
             methitemsinmethvehicle.Add(ssmmethpipe);
             methitemsinvehicle.Add(ssmmethpipe);
 
+            API.Wait(250);
+
             Random ssmmethquality = new Random();
             int ssmmethqualitychecker = ssmmethquality.Next(1, 100 + 1);
             if (ssmmethqualitychecker <= 50)
@@ -677,16 +927,26 @@ namespace RangersoftheWilderness.net
             API.Wait(500);
 
             float ssmmethsmellnotification = Game.PlayerPed.Position.DistanceTo(ncihmethvehicle.Position);
-            if (ssmmethsmellnotification < 15f)
+            if (ssmmethsmellnotification < 10f)
             {
-                ShowDialog("Heavy smell of amonia (urine)", 10000, 20f);
+                ShowDialog("Heavy smell of amonia (urine)", 10000, 10f);
             }
+
+            Utilities.SetPedData(ncihped1.NetworkId, ssmhunter1data);
+            Utilities.SetPedData(ncihped2.NetworkId, ssmhunter2data);
+            Utilities.SetPedData(ncihped3.NetworkId, ssmmeth1data);
+            Utilities.SetPedData(ncihped4.NetworkId, ssmmeth2data);
+
+            ssmmethvehicledata.Items = methitemsinvehicle;
+            ssmvehicledata.Items = methitemsinvehicle;
+            Utilities.SetVehicleData(ncihvehicle.NetworkId, ssmvehicledata);
+            Utilities.SetVehicleData(ncihmethvehicle.NetworkId, ssmmethvehicledata);
         }
 
         public async Task SomethingSmellsMethyPursuitBothFlee()
         {
             Tick -= SomethingSmellsMethyPursuitBothFlee;
-            
+
             ncihped1.Task.EnterVehicle(ncihvehicle, VehicleSeat.Driver);
             ncihped2.Task.EnterVehicle(ncihvehicle, VehicleSeat.Passenger);
 
@@ -745,8 +1005,10 @@ namespace RangersoftheWilderness.net
         {
             Tick -= AbandonedVehicle;
 
+            API.Wait(500);
+
             Random AVncihvehiclefindingrandomizer = new Random();
-            int AVncihvehiclefindings = AVncihvehiclefindingrandomizer.Next(1, 100 + 1);
+            int AVncihvehiclefindings = AVncihvehiclefindingrandomizer.Next(1, 80 + 1);
             if (AVncihvehiclefindings <= 20)
             {
                 Tick += AbandonedVehicleDrinking;
@@ -759,62 +1021,393 @@ namespace RangersoftheWilderness.net
 
             if (AVncihvehiclefindings > 40 && AVncihvehiclefindings <= 60)
             {
-                Tick += AbandonedVehicleDrugDealer;
+                Tick += AbandonedVehicleDrug;
             }
 
-            if (AVncihvehiclefindings > 60 && AVncihvehiclefindings <= 80)
+            if (AVncihvehiclefindings > 60)
             {
-                Tick += AbandonedVehicleDrugBuyer;
-            }
-
-            if (AVncihvehiclefindings > 80)
-            {
-                Tick += AbandonedVehicleBodyNearby;
+                Tick += AbandonedVehicleEmpty;
             }
         }
 
         public async Task AbandonedVehicleDrinking()
         {
             Tick -= AbandonedVehicleDrinking;
-            VehicleData AVncihvehicledata = await Utilities.GetVehicleData(ncihvehicle.NetworkId);
-            List<Item> AVncihvehicleitemlist = new List<Item>();
-            float AVDncihvehicleobservation = Game.PlayerPed.Position.DistanceTo(ncihmethvehicle.Position);
+            VehicleData AVDrinkncihvehicledata = await Utilities.GetVehicleData(ncihvehicle.NetworkId);
+            List<Item> AVDrinkncihvehicleitemlist = new List<Item>();
+            float AVDrinkncihvehicleobservation = Game.PlayerPed.Position.DistanceTo(ncihmethvehicle.Position);
 
+            Random AVDrinkdeadbodyequalstrue = new Random();
+            int AVDrinkdeadbodyreallyequalstrue = AVDrinkdeadbodyequalstrue.Next(1, 100 + 1);
+            if (AVDrinkdeadbodyreallyequalstrue < 10)
+            {
+                Tick += AbandonedVehicleBodyNearbyDrink;
+            }
+
+            if (AVDrinkncihvehicleobservation < 10f)
+            {
+                ShowDialog("Heavy smell of alcohol eminating from the vehicle", 10000, 10f);
+            }
+
+            Item AVDrinkbeerbottle = new Item
+            {
+                Name = "Pißwasser bottle, unopen",
+                IsIllegal = false
+            };
+            Item AVDrinksixpack = new Item
+            {
+                Name = "Six pack of Pißwasser, unopen",
+                IsIllegal = false
+            };
+            Item AVDrinksixpackopen = new Item
+            {
+                Name = "Six pack of Pißwasser, open",
+                IsIllegal = true
+            };
+            Item AVDrinktallboy = new Item
+            {
+                Name = "Pißwasser Tallboy, unopen",
+                IsIllegal = false
+            };
+            Item AVDrinkopenbottle = new Item
+            {
+                Name = "Pißwasser bottle, open",
+                IsIllegal = true
+            };
+            Item AVDrinktallboyopen = new Item
+            {
+                Name = "Pißwasser Tallboy, open",
+                IsIllegal = true
+            };
+            Item AVDrinkemptybottle = new Item
+            {
+                Name = "Empty Pißwasser bottle",
+                IsIllegal = true
+            };
+            Item AVDrinkbeercan = new Item
+            {
+                Name = "Pißwasser can, unopen",
+                IsIllegal = false
+            };
+            Item AVDrinkopencan = new Item
+            {
+                Name = "Pißwasser can, open",
+                IsIllegal = true
+            };
+            Item AVDrinkemptycan = new Item
+            {
+                Name = "Empty Pißwasser can",
+                IsIllegal = true
+            };
+            Item AVDrinktallboyempty = new Item
+            {
+                Name = "Empty Pißwasser Tallboy",
+                IsIllegal = true
+            };
+
+            Random AVDrinkvehicleinventorydecider = new Random();
+            int AVDrinkvehicleinventorydecision = AVDrinkvehicleinventorydecider.Next(1, 100 + 1);
+            if (AVDrinkvehicleinventorydecision <= 33)
+            {
+                AVDrinkncihvehicleitemlist.Add(AVDrinksixpackopen);
+                AVDrinkncihvehicleitemlist.Add(AVDrinktallboyempty);
+                AVDrinkncihvehicleitemlist.Add(AVDrinktallboyopen);
+                AVDrinkncihvehicleitemlist.Add(AVDrinktallboy);
+                AVDrinkncihvehicleitemlist.Add(AVDrinktallboyopen);
+                AVDrinkncihvehicledata.Items = AVDrinkncihvehicleitemlist;
+            }
+            if (AVDrinkvehicleinventorydecision > 33 && AVDrinkvehicleinventorydecision <= 66)
+            {
+                AVDrinkncihvehicleitemlist.Add(AVDrinksixpackopen);
+                AVDrinkncihvehicleitemlist.Add(AVDrinkemptybottle);
+                AVDrinkncihvehicleitemlist.Add(AVDrinkbeerbottle);
+                AVDrinkncihvehicleitemlist.Add(AVDrinkopenbottle);
+                AVDrinkncihvehicledata.Items = AVDrinkncihvehicleitemlist;
+            }
+            if (AVDrinkvehicleinventorydecision > 66)
+            {
+                AVDrinkncihvehicleitemlist.Add(AVDrinksixpack);
+                AVDrinkncihvehicleitemlist.Add(AVDrinkopencan);
+                AVDrinkncihvehicleitemlist.Add(AVDrinkopencan);
+                AVDrinkncihvehicleitemlist.Add(AVDrinkbeercan);
+                AVDrinkncihvehicleitemlist.Add(AVDrinkemptycan);
+                AVDrinkncihvehicleitemlist.Add(AVDrinkemptycan);
+                AVDrinkncihvehicledata.Items = AVDrinkncihvehicleitemlist;
+            }
+
+            API.Wait(500);
+
+            ncihvehicle.SetData(AVDrinkncihvehicledata);
         }
 
         public async Task AbandonedVehicleBloodyInterior()
         {
             Tick -= AbandonedVehicleBloodyInterior;
-            VehicleData AVncihvehicledata = await Utilities.GetVehicleData(ncihvehicle.NetworkId);
-            List<Item> AVncihvehicleitemlist = new List<Item>();
+            VehicleData AVBIncihvehicledata = await Utilities.GetVehicleData(ncihvehicle.NetworkId);
+            List<Item> AVBIncihvehicleitemlist = new List<Item>();
             float AVBIncihvehicleobservation = Game.PlayerPed.Position.DistanceTo(ncihmethvehicle.Position);
+
+            Random AVBIdeadbodyequalstrue = new Random();
+            int AVBIdeadbodyreallyequalstrue = AVBIdeadbodyequalstrue.Next(1, 100 + 1);
+            if (AVBIdeadbodyreallyequalstrue < 10)
+            {
+                Tick += AbandonedVehicleBodyNearbyBI;
+            }
+
+            if (AVBIncihvehicleobservation < 10f)
+            {
+                ShowDialog("Several bulletholes in the vehicle, excessive blood in and around the driver compartment.", 10000, 10f);
+            }
+
+            Item AVBIvehobservation1 = new Item
+            {
+                Name = "Bullets entered from the rear driver side of the vehicle",
+            };
+            Item AVBIvehobservation2 = new Item
+            {
+                Name = "Driver seat soaked in blood",
+                IsIllegal = true,
+            };
+            Item AVBIvehobservation3 = new Item
+            {
+                Name = "Bullet holes into console do not match number of holes on exterior"
+            };
+
+            AVBIncihvehicleitemlist.Add(AVBIvehobservation1);
+            AVBIncihvehicleitemlist.Add(AVBIvehobservation2);
+            AVBIncihvehicleitemlist.Add(AVBIvehobservation3);
+
+            AVBIncihvehicledata.Items = AVBIncihvehicleitemlist;
+
+            ncihvehicle.SetData(AVBIncihvehicledata);
         }
 
-        public async Task AbandonedVehicleDrugDealer()
+        public async Task AbandonedVehicleDrug()
         {
-            Tick -= AbandonedVehicleDrugDealer;
-            VehicleData AVncihvehicledata = await Utilities.GetVehicleData(ncihvehicle.NetworkId);
-            List<Item> AVncihvehicleitemlist = new List<Item>();
-            float AVDDncihvehicleobservation = Game.PlayerPed.Position.DistanceTo(ncihmethvehicle.Position);
+            Tick -= AbandonedVehicleDrug;
+            VehicleData AVDrugncihvehicledata = await Utilities.GetVehicleData(ncihvehicle.NetworkId);
+            List<Item> AVDrugncihvehicleitemlist = new List<Item>();
+            float AVDrugncihvehicleobservation = Game.PlayerPed.Position.DistanceTo(ncihmethvehicle.Position);
+
+            Random AVDrugdeadbodyequalstrue = new Random();
+            int AVDrugdeadbodyreallyequalstrue = AVDrugdeadbodyequalstrue.Next(1, 100 + 1);
+            if (AVDrugdeadbodyreallyequalstrue < 10)
+            {
+                Tick += AbandonedVehicleBodyNearbyDrug;
+            }
+
+            Item AVBvehicleclue1 = new Item
+            {
+                Name = "Hidden compartments broken open",
+                IsIllegal = true,
+            };
+            Item AVBvehicleclue2 = new Item
+            {
+                Name = "Open ice chest",
+                IsIllegal = false,
+            };
+            Item AVBvehicleclue3 = new Item
+            {
+                Name = "Empty bag from Up-n-Atom",
+                IsIllegal = false,
+            };
+
+            AVDrugncihvehicleitemlist.Add(AVBvehicleclue1);
+            AVDrugncihvehicleitemlist.Add(AVBvehicleclue2);
+            AVDrugncihvehicleitemlist.Add(AVBvehicleclue3);
+
+            AVDrugncihvehicledata.Items = AVDrugncihvehicleitemlist;
+
+            ncihvehicle.SetData(AVDrugncihvehicledata);
+
+            if (AVDrugncihvehicleobservation < 10f)
+            {
+                ShowDialog("The vehicle appears to have been ransacked", 10000, 10f);
+            }
         }
 
-        public async Task AbandonedVehicleDrugBuyer()
+        public async Task AbandonedVehicleEmpty()
         {
-            Tick -= AbandonedVehicleDrugBuyer;
-            VehicleData AVncihvehicledata = await Utilities.GetVehicleData(ncihvehicle.NetworkId);
-            List<Item> AVncihvehicleitemlist = new List<Item>();
-            float AVDBncihvehicleobservation = Game.PlayerPed.Position.DistanceTo(ncihmethvehicle.Position);
+            Tick -= AbandonedVehicleEmpty;
+
+            VehicleData AVEncihvehicledata = await Utilities.GetVehicleData(ncihvehicle.NetworkId);
+            List<Item> AVEncihvehicleitemlist = new List<Item>();
+            float AVEncihvehicleobservation = Game.PlayerPed.Position.DistanceTo(ncihmethvehicle.Position);
+
+            Item AVEdashstripped = new Item
+            {
+                Name = "The dash has been stripped down",
+            };
+            Item AVEbustedcolumn = new Item
+            {
+                Name = "Steering wheel column has been busted open",
+                IsIllegal = true,
+            };
+
+            if (AVEncihvehicleobservation < 10f)
+            {
+                ShowDialog("Vehicle seems to be strangely empty and attempted to be stripped down for parts", 10000, 10f);
+            }
         }
 
-        public async Task AbandonedVehicleBodyNearby()
+        public async Task AbandonedVehicleBodyNearbyDrink()
         {
-            Tick -= AbandonedVehicleBodyNearby;
-            VehicleData AVncihvehicledata = await Utilities.GetVehicleData(ncihvehicle.NetworkId);
-            List<Item> AVncihvehicleitemlist = new List<Item>();
-            float AVBNncihvehicleobservation = Game.PlayerPed.Position.DistanceTo(ncihmethvehicle.Position);
+            Tick -= AbandonedVehicleBodyNearbyDrink;
 
-            Random AVncihbodyifneededdecider = new Random();
-            string AVncihbodydecicion = hunterpedlist[AVncihbodyifneededdecider.Next(hunterpedlist.Length)];
+            PedData AVBNDrinkncihbodydata = await Utilities.GetPedData(ncihped1.NetworkId);
+            List<Item> AVBNDrinkncihpeditemlist = new List<Item>();
+            float AVBNDrinkncihbodyobservation = Game.PlayerPed.Position.DistanceTo(ncihped1.Position);
+
+            Random AVBNDrinkncihbodyplacementdecider = new Random();
+            int AVBNDrinkncihbodyplacementdecision = AVBNDrinkncihbodyplacementdecider.Next(1, 100 + 1);
+            if (AVBNDrinkncihbodyplacementdecision <= 33)
+            {
+                ncihped1 = await SpawnPed(RandomUtils.GetRandomPed(), Location + 2, 0);
+                ncihped1.SetIntoVehicle(ncihvehicle, VehicleSeat.Driver);
+                ncihped1.Kill();
+            }
+            if (AVBNDrinkncihbodyplacementdecision > 33 && AVBNDrinkncihbodyplacementdecision <= 66)
+            {
+                ncihped1 = await SpawnPed(RandomUtils.GetRandomPed(), Location + 50, 0);
+                ncihped1.Kill();
+            }
+            if (AVBNDrinkncihbodyplacementdecision > 66)
+            {
+                ncihped1 = await SpawnPed(RandomUtils.GetRandomPed(), Location + 15, 0);
+                ncihped1.Kill();
+            }
+
+            if (AVBNDrinkncihbodyobservation < 10f)
+            {
+                ShowDialog("Heavy smell of alcohol.", 10000, 10f);
+            }
+
+            AVBNDrinkncihbodydata.BloodAlcoholLevel = 0.22;
+            ncihped1.SetData(AVBNDrinkncihbodydata);
+
+            if (ncihped1.IsAlive)
+            {
+                ncihped1.Kill();
+                return;
+            }
+        }
+
+        public async Task AbandonedVehicleBodyNearbyBI()
+        {
+            Tick -= AbandonedVehicleBodyNearbyBI;
+
+            PedData AVBNBIncihbodydata = await Utilities.GetPedData(ncihped1.NetworkId);
+            List<Item> AVBNBIncihpeditemlist = new List<Item>();
+            float AVBNBIncihbodyobservation = Game.PlayerPed.Position.DistanceTo(ncihped1.Position);
+
+            Random AVBNBIncihbodyplacementdecider = new Random();
+            int AVBNBIncihbodyplacementdecision = AVBNBIncihbodyplacementdecider.Next(1, 100 + 1);
+            if (AVBNBIncihbodyplacementdecision <= 33)
+            {
+                ncihped1 = await SpawnPed(RandomUtils.GetRandomPed(), Location + 30, 0);
+                ncihped1.Kill();
+            }
+            if (AVBNBIncihbodyplacementdecision > 33 && AVBNBIncihbodyplacementdecision <= 66)
+            {
+                ncihped1 = await SpawnPed(RandomUtils.GetRandomPed(), Location + 50, 0);
+                ncihped1.Kill();
+            }
+            if (AVBNBIncihbodyplacementdecision > 66)
+            {
+                ncihped1 = await SpawnPed(RandomUtils.GetRandomPed(), Location + 15, 0);
+                ncihped1.Kill();
+            }
+
+            Item AVBNBIbulletwound1 = new Item
+            {
+                Name = "Bullet entry and exit wound through left arm",
+                IsIllegal = true,
+            };
+            Item AVBNBIbulletwound2 = new Item
+            {
+                Name = "Bullet entry wound through lower back",
+                IsIllegal = true,
+            };
+            Item AVBNBIbulletwound3 = new Item
+            {
+                Name = "Bullet entry wound through center of back",
+                IsIllegal = true,
+            };
+            Item AVBNBIbulletwound4 = new Item
+            {
+                Name = "Bullet entry and exit wound through left upper back",
+                IsIllegal = true,
+            };
+
+            AVBNBIncihpeditemlist.Add(AVBNBIbulletwound1);
+            AVBNBIncihpeditemlist.Add(AVBNBIbulletwound2);
+            AVBNBIncihpeditemlist.Add(AVBNBIbulletwound3);
+            AVBNBIncihpeditemlist.Add(AVBNBIbulletwound4);
+
+            AVBNBIncihbodydata.Items = AVBNBIncihpeditemlist;
+
+            ncihped1.SetData(AVBNBIncihbodydata);
+
+            if (ncihped1.IsAlive)
+            {
+                ncihped1.Kill();
+                return;
+            }
+        }
+
+        public async Task AbandonedVehicleBodyNearbyDrug()
+        {
+            Tick -= AbandonedVehicleBodyNearbyDrug;
+
+            PedData AVBNDrugncihbodydata = await Utilities.GetPedData(ncihped1.NetworkId);
+            List<Item> AVBNDrugncihpeditemlist = new List<Item>();
+            float AVBNDrugncihbodyobservation = Game.PlayerPed.Position.DistanceTo(ncihped1.Position);
+
+            Random AVBNDrugncihbodyplacementdecider = new Random();
+            int AVBNDrugncihbodyplacementdecision = AVBNDrugncihbodyplacementdecider.Next(1, 100 + 1);
+            if (AVBNDrugncihbodyplacementdecision <= 33)
+            {
+                ncihped1 = await SpawnPed(RandomUtils.GetRandomPed(), Location + 2, 0);
+                ncihped1.SetIntoVehicle(ncihvehicle, VehicleSeat.Driver);
+                ncihped1.Kill();
+            }
+            if (AVBNDrugncihbodyplacementdecision > 33 && AVBNDrugncihbodyplacementdecision <= 66)
+            {
+                ncihped1 = await SpawnPed(RandomUtils.GetRandomPed(), Location + 50, 0);
+                ncihped1.Kill();
+            }
+            if (AVBNDrugncihbodyplacementdecision > 66)
+            {
+                ncihped1 = await SpawnPed(RandomUtils.GetRandomPed(), Location + 3, 0);
+                ncihped1.Kill();
+            }
+
+            Item AVBNDrugexecutionstyle = new Item
+            {
+                Name = "Shot in the back of the head",
+                IsIllegal = true,
+            };
+            Item AVBNDrugpockets = new Item
+            {
+                Name = "Pockets turned inside out and empty",
+                IsIllegal = false,
+            };
+
+            AVBNDrugncihpeditemlist.Add(AVBNDrugexecutionstyle);
+            AVBNDrugncihpeditemlist.Add(AVBNDrugpockets);
+
+            AVBNDrugncihbodydata.Items = AVBNDrugncihpeditemlist;
+            AVBNDrugncihbodydata.FirstName = "Unknown";
+            AVBNDrugncihbodydata.LastName = "Unknown";
+            AVBNDrugncihbodydata.DateOfBirth = "Unknown";
+
+            ncihped1.SetData(AVBNDrugncihbodydata);
+
+            if (ncihped1.IsAlive)
+            {
+                ncihped1.Kill();
+                return;
+            }
         }
     }
 }
